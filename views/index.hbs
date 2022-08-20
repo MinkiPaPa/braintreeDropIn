@@ -170,7 +170,7 @@ Number.prototype.formatNumber = function(){
 var button = document.querySelector('#submit-button');
   braintree.dropin.create({
     // Insert your tokenization key here
-    authorization: 'sandbox_fw87hzc2_4yhxvgqqm2njyp5c',
+    authorization: '<use_your_tokenization_key>',
     container: '#dropin-container'
   }, function (createErr, instance) {
     button.addEventListener('click', function () {
