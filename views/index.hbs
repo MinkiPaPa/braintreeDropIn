@@ -1,0 +1,209 @@
+<form name="orderform" id="orderform" method="post" class="orderform" action="/Page" onsubmit="return false;">
+<input type="hidden" name="cmd" value="order">
+<div class="basketdiv" id="basket">
+    <div class="row head">
+        <div class="subdiv">
+            <div class="check">Select</div>
+            <div class="img">Image</div>
+            <div class="pname">Product Name</div>
+        </div>
+        <div class="subdiv">
+            <div class="basketprice">Unit Price</div>
+            <div class="num">Qty</div>
+            <div class="sum">Sub Total</div>
+        </div>
+        <div class="subdiv">
+            <div class="basketcmd">Remove</div>
+        </div>
+        <div class="split"></div>
+    </div>
+    <div class="row data">
+        <div class="subdiv">
+            <div class="check"><input type="checkbox" name="buy" value="260" checked="" onclick="javascript:basket.checkItem();">&nbsp;</div>
+            <div class="img"><img src="/images/bottle.jpg" width="60"></div>
+            <div class="pname">
+                <span>Sample Product 01</span>
+            </div>
+        </div>
+        <div class="subdiv">
+            <div class="basketprice"><input type="hidden" name="p_price" id="p_price1" class="p_price" value="19">19 USD</div>
+            <div class="num">
+                <div class="updown">
+                    <input type="text" name="p_num1" id="p_num1" size="2" maxlength="4" class="p_num" value="1" onkeyup="javascript:basket.changePNum(1);">
+                    <span onclick="javascript:basket.changePNum(1);"><i class="fas fa-arrow-alt-circle-up up"></i></span>
+                    <span onclick="javascript:basket.changePNum(1);"><i class="fas fa-arrow-alt-circle-down down"></i></span>
+                </div>
+            </div>
+            <div class="sum">19 USD</div>
+        </div>
+        <div class="subdiv">
+            <div class="basketcmd"><a href="javascript:void(0)" class="abutton" onclick="javascript:basket.delItem();">Remove</a></div>
+        </div>
+    </div>
+    <div class="row data">
+        <div class="subdiv">
+            <div class="check"><input type="checkbox" name="buy" value="261" checked="" onclick="javascript:basket.checkItem();">&nbsp;</div>
+            <div class="img"><img src="/images/protector.jpg" width="60"></div>
+            <div class="pname">
+                <span>Sample Product 02</span>
+            </div>
+        </div>
+        <div class="subdiv">
+            <div class="basketprice"><input type="hidden" name="p_price" id="p_price2" class="p_price" value="49">49 USD</div>
+            <div class="num">
+                <div class="updown">
+                    <input type="text" name="p_num2" id="p_num2" size="2" maxlength="4" class="p_num" value="1" onkeyup="javascript:basket.changePNum(2);">
+                    <span onclick="javascript:basket.changePNum(2);"><i class="fas fa-arrow-alt-circle-up up"></i></span>
+                    <span onclick="javascript:basket.changePNum(2);"><i class="fas fa-arrow-alt-circle-down down"></i></span>
+                </div>
+            </div>
+            <div class="sum">49 USD</div>
+        </div>
+        <div class="subdiv">
+            <div class="basketcmd"><a href="javascript:void(0)" class="abutton" onclick="javascript:basket.delItem();">Remove</a></div>
+        </div>
+    </div>
+    <div class="row data">
+        <div class="subdiv">
+            <div class="check"><input type="checkbox" name="buy" value="262" checked="" onclick="javascript:basket.checkItem();">&nbsp;</div>
+            <div class="img"><img src="/images/usb.jpg" width="60"></div>
+            <div class="pname">
+                <span>Sample Product 03</span>
+            </div>
+        </div>
+        <div class="subdiv">
+            <div class="basketprice"><input type="hidden" name="p_price" id="p_price3" class="p_price" value="99">99 USD</div>
+            <div class="num">
+                <div class="updown">
+                    <input type="text" name="p_num3" id="p_num3" size="2" maxlength="4" class="p_num" value="1" onkeyup="javascript:basket.changePNum(3);">
+                    <span onclick="javascript:basket.changePNum(3);"><i class="fas fa-arrow-alt-circle-up up"></i></span>
+                    <span onclick="javascript:basket.changePNum(3);"><i class="fas fa-arrow-alt-circle-down down"></i></span>
+                </div>
+            </div>
+            <div class="sum">99 USD</div>
+        </div>
+        <div class="subdiv">
+            <div class="basketcmd"><a href="javascript:void(0)" class="abutton" onclick="javascript:basket.delItem();">Remove</a></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="bigtext right-align sumcount" id="sum_p_num">Total Qty : 3 ea</div>
+<div class="bigtext right-align box blue summoney" id="sum_p_price">Total Amount : 167 USD</div>
+
+<div id="dropin-wrapper">
+<div id="checkout-message"></div>
+<div id="dropin-container"></div>
+<button id="submit-button" class="button button--small button--green">Purchase</button>
+</form>
+
+<script>
+let basket = {
+    totalCount: 0, 
+    totalPrice: 0,
+    // Delete checked items
+    delCheckedItem: function(){
+        document.querySelectorAll("input[name=buy]:checked").forEach(function (item) {
+            item.parentElement.parentElement.parentElement.remove();
+        });
+
+        this.reCalc();
+        this.updateUI();
+    },
+
+    // Re-calculation
+    reCalc: function(){
+        this.totalCount = 0;
+        this.totalPrice = 0;
+        document.querySelectorAll(".p_num").forEach(function (item) {
+            if(item.parentElement.parentElement.parentElement.previousElementSibling.firstElementChild.firstElementChild.checked == true){
+                var count = parseInt(item.getAttribute('value'));
+                this.totalCount += count;
+                var price = item.parentElement.parentElement.previousElementSibling.firstElementChild.getAttribute('value');
+                this.totalPrice += count * price;
+            }
+        }, this); // ForEach Pass the object with the second parameter so that this points to the object literal
+    },
+    // Update Total numbers
+    updateUI: function () {
+        document.querySelector('#sum_p_num').textContent = 'Total Qty : ' + this.totalCount.formatNumber() + ' ea';
+        document.querySelector('#sum_p_price').textContent = 'Total Amount : ' + this.totalPrice.formatNumber() + ' USD';
+    },
+    // Change numer of parts
+    changePNum: function (pos) {
+        var item = document.querySelector('input[name=p_num'+pos+']');
+        var p_num = parseInt(item.getAttribute('value'));
+        var newval = event.target.classList.contains('up') ? p_num+1 : event.target.classList.contains('down') ? p_num-1 : event.target.value;
+        
+        if (parseInt(newval) < 1 || parseInt(newval) > 99) { return false; }
+
+        item.setAttribute('value', newval);
+        item.value = newval;
+
+        var price = item.parentElement.parentElement.previousElementSibling.firstElementChild.getAttribute('value');
+        item.parentElement.parentElement.nextElementSibling.textContent = (newval * price).formatNumber()+" USD";
+
+        this.reCalc();
+        this.updateUI();
+    },
+    checkItem: function () {
+        this.reCalc();
+        this.updateUI();
+    },
+    delItem: function () {
+        event.target.parentElement.parentElement.parentElement.remove();
+        this.reCalc();
+        this.updateUI();
+    }
+};
+
+// Numbering format ex) 1000 -> 1,000
+Number.prototype.formatNumber = function(){
+    if(this==0) return 0;
+    let regex = /(^[+-]?\d+)(\d{3})/;
+    let nstr = (this + '');
+    while (regex.test(nstr)) nstr = nstr.replace(regex, '$1' + ',' + '$2');
+    return nstr;
+};
+
+var button = document.querySelector('#submit-button');
+  braintree.dropin.create({
+    // Insert your tokenization key here
+    authorization: 'sandbox_fw87hzc2_4yhxvgqqm2njyp5c',
+    container: '#dropin-container'
+  }, function (createErr, instance) {
+    button.addEventListener('click', function () {
+      instance.requestPaymentMethod(function (requestPaymentMethodErr, payload) {
+        // When the user clicks on the 'Submit payment' button this code will send the
+        // encrypted payment information in a variable called a payment method nonce
+        $.ajax({
+          type: 'POST',
+          url: '/checkout',
+          data: {'amount': basket.totalPrice, 'paymentMethodNonce': payload.nonce}
+        }).done(function(result) {
+          // Tear down the Drop-in UI
+          instance.teardown(function (teardownErr) {
+            if (teardownErr) {
+              console.error('Could not tear down Drop-in UI!');
+            } else {
+              console.info('Drop-in UI has been torn down!');
+              // Remove the 'Submit payment' button
+              $('#submit-button').remove();
+            }
+          });
+          
+          if (result.success) {
+            $('#checkout-message').html(
+              '<h1>Transaction Success</h1><p>Check your <a href="https://sandbox.braintreegateway.com/login">Braintree sandbox Control Panel</a> for your test transactions.</p><p>Refresh to try another transaction.</p>'
+            );} else {
+            console.log(result);
+            $('#checkout-message').html(
+              '<h1>Error</h1><p>Check your console.</p>'
+            );
+          }
+        });
+      });
+    });
+  });
+</script>

@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../../braintreeDropIn/app');
+var debug = require('debug')('braintreedropin:server');
+var http = require('http');
+const { Console } = require('console');
+
+// var port = normalizePort(process.env.PORT || '3000');
+// app.set('port', port);
+
+app.set('port', process.env.PORT || 3000);
+
+/**
+ * Create HTTP server.
+ */
+
+// var server = http.createServer(app);
+http.createServer(app).listen(app.get('port'),function(){
+  console.log('Start Express server PORT : ' + app.get('port'));
+});
+
