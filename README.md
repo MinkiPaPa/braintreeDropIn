@@ -5,6 +5,7 @@ This is example code for test with Braintree Drop-in UI.
   2. post total amount when user checkout using braintree drop-in ui.
 
 - TEST IP : (http://34.125.64.118:3000/)
+- TEST CARD : 4111 1111 1111 1111 , 09/23
 
 ![client_image_01](https://user-images.githubusercontent.com/97417837/185738802-8c6ead26-9977-4b5f-9a84-2c57ec3d655f.jpg)
 
